@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade 3 - Craps</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffb6c0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #e0798c;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #000000;
+    }
+
+    .dados {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #363636;
+    }
+
+    input {
+      width: 100%;
+      padding-top: 6px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #65365a;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #5c00b3;
+    }
+
+    .mensagem {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #202020;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Jogo de Craps</h1>
+    <p>Grupo: Cecília Cristine, Polliana Andrade e Ramon Ferreira</p>
+    <div class="dados">
+      <label for="dado1">Dado 1:</label>
+      <input type="text" id="dado1" readonly>
+
+      <label for="dado2">Dado 2:</label>
+      <input type="text" id="dado2" readonly>
+
+      <label for="soma">Soma dos Pontos:</label>
+      <input type="text" id="soma" readonly>
+
+      <label for="pontuacao">Pontuação do Jogador:</label>
+      <input type="text" id="pontuacao" readonly>
+    </div>
+    <button id="rolarDados">Rolar os dados</button>
+    <div class="mensagem" id="mensagem">Clique no botão para jogar</div>
+  </div>
+  <script>
+    let pontuacao = null;
+    let jogoAtivo = true;
+
+    function rolarDados() {
+      if (!jogoAtivo) {
+        reiniciarJogo();
+      }
+
+      const dado1 = Math.floor(Math.random() * 6) + 1;
+      const dado2 = Math.floor(Math.random() * 6) + 1;
+      const soma = dado1 + dado2;
+
+      document.getElementById("dado1").value = dado1;
+      document.getElementById("dado2").value = dado2;
+      document.getElementById("soma").value = soma;
+
+      const mensagemEl = document.getElementById("mensagem");
+
+      if (pontuacao === null) {
+        if (soma === 7 || soma === 11) {
+          mensagemEl.textContent = "O jogador venceu! Clique no botão para jogar novamente.";
+          jogoAtivo = false;
+        } else if (soma === 2 || soma === 3 || soma === 12) {
+          mensagemEl.textContent = "O jogador perdeu! Clique no botão para jogar novamente.";
+          jogoAtivo = false;
+        } else {
+          pontuacao = soma;
+          document.getElementById("pontuacao").value = pontuacao;
+          mensagemEl.textContent = "Jogue os dados novamente.";
+        }
+      } else {
+        if (soma === pontuacao) {
+          mensagemEl.textContent = "O jogador venceu! Clique no botão para jogar novamente.";
+          jogoAtivo = false;
+        } else if (soma === 7) {
+          mensagemEl.textContent = "O jogador perdeu! Clique no botão para jogar novamente.";
+          jogoAtivo = false;
+        } else {
+          mensagemEl.textContent = "Jogue os dados novamente.";
+        }
+      }
+    }
+
+    function reiniciarJogo() {
+      pontuacao = null;
+      jogoAtivo = true;
+      document.getElementById("dado1").value = "";
+      document.getElementById("dado2").value = "";
+      document.getElementById("soma").value = "";
+      document.getElementById("pontuacao").value = "";
+      document.getElementById("mensagem").textContent = "Clique no botão para jogar";
+    }
+
+    document.getElementById("rolarDados").addEventListener("click", rolarDados);
+  </script>
+</body>
+</html>
